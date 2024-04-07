@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container-fluid px-2 px-md-4">
+      <div class="page-header min-height-300 border-radius-xl mt-4" >
+        <span class="mask" style="background: linear-gradient(to bottom, #007bff, #007bff); opacity: 0.6;"></span>
+
+      </div>
+      <div class="card card-body mx-3 mx-md-4 mt-n6">
+        <div class="row gx-4 mb-2">
+          <div class="col-auto">
+            <div class="avatar avatar-xl position-relative">
+              <img src="{% static 'assets/img/chatbotimg.png' %}" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+            </div>
+          </div>
+          <form method="post">
+            {% csrf_token %}
+        
+            <label for="user_input">Your message:</label><br>
+            
+            <input type="radio" name="user_input_type" value="text" id="textOption" checked> Text
+            <input type="radio" name="user_input_type" value="voice" id="voiceOption"> Voice
+        
+            <br>
+            
+            <div id="textInputArea">
+                <textarea id="user_input" name="user_input" rows="4" cols="50"></textarea><br>
+            </div>
+        
+            <div id="voiceInputArea" style="display: none;">
+                <!-- Display the voice recorder -->
+                <button  id="recordButton" type="button" class="btn bg-gradient-primary">Start Recording</button>
+            </div>
+            
+            <button id="recordButton" type="submit" class="btn" style="background-color: #007bff; color: #ffffff; padding: 10px 20px; border: none; border-radius: 5px;">Send</button>
+
+        </form>
+        
+        {% if response %}
+        <div id="aiResponse" style="margin-top: 20px; padding: 15px; border: 2px solid #50a7e1; border-radius: 10px; background-color: #ecf0f1;">
+            <h2 style="color: #163b60; font-weight: bold;">AI Response:</h2>
+            <pre id="responseText" style="white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 16px; margin: 10px 0; color: #333;">
+                {{ response }}
+            </pre>
+        </div>
+    
+        <script>
+            // JavaScript to handle asterisks on a new line
+            document.addEventListener('DOMContentLoaded', function () {
+                const responseText = document.getElementById('responseText');
+                if (responseText) {
+                    responseText.innerHTML = responseText.innerHTML.replace(/\*\*/g, '<br>*');
+                }
+            });
+        </script>
+    {% endif %}
+    
+    
+        
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+<script>
+    // JavaScript code to toggle visibility based on the selected input type
+    $(document).ready(function() {
+        $('input[type="radio"]').change(function() {
+            if ($(this).val() == 'text') {
+                $('#textInputArea').show();
+                $('#voiceInputArea').hide();
+            } else if ($(this).val() == 'voice') {
+                $('#textInputArea').hide();
+                $('#voiceInputArea').show();
+                initializeVoiceRecorder();
+            }
+        });
+
+      });
+</script>
+        
+{% endblock %}
