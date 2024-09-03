@@ -30,7 +30,7 @@ import speech_recognition as sr
 from googletrans import Translator
 import random
 
-
+genai.configure(api_key="AIzaSyDdEVqEWK0INky4NT3dnLuFz88c-OQi6wU")
 def index(request):
     return render(request, 'index.html')
 
@@ -111,12 +111,16 @@ def get_ai_response(user_input):
    
 
     model =model = genai.GenerativeModel('gemini-pro')
+    # model = genai.GenerativeModel(model_name="gemini-1.5-flash")
+
      
     context = "you are an multilingual ai doctor who suggests patients and consults them about their problems regarding health "
     message = f"{context} {user_input}"
-    response = model.generate_content(message)
+    response = model.generate_content("translate to english"+message)
+
+    # response = model.generate_content(message)
     answer = response.text
-    print(f'hi{answer}')
+    print(f'{answer}')
     return response.text 
 
 
@@ -211,22 +215,28 @@ def handle_recorded_file(filepath):
 
     # Recognize speech from Hindi audio
     try:
+        model =model = genai.GenerativeModel('gemini-pro')
         hindi_text = recognizer.recognize_google(audio_data, language='hi-IN')
         print("Hindi Text:", hindi_text)
 
         # Translate Hindi text to English
-        english_translation = translator.translate(hindi_text, src='hi', dest='en').text
+        # english_translation = translator.translate(hindi_text).text
+        english_translation = model.generate_content("translate to english"+hindi_text).text
         print("English Translation:", english_translation)
 
         
 
-        model =model = genai.GenerativeModel('gemini-pro')
+        
         
         message = "You just need to tell what type of doctur to consult only one word ,"+ english_translation+",select one from phscian,pediatrican, neurologist,nephrologist,dermatologist and gynaclologist"
         # message = f"{context} {english_translation}"
         response = model.generate_content(message)
         answer = response.text
         print(f'hi{answer}')
+
+        print(response.text )
+        print(hindi_text,english_translation)
+
         return [response.text ,hindi_text,english_translation]
 
     except sr.UnknownValueError:
@@ -240,9 +250,13 @@ def handle_recorded_file(filepath):
 def recorded_audio(request):
     if request.method == 'POST':
         # Execute the provided audio recording script
-        subprocess.run(['python', 'C:\\hack\\rural\\record.py'])
-        
-        x=handle_recorded_file("C:\\hack\\rural\\sounds\\output.wav")
+        # subprocess.run(['python', 'C:\\hack\\rural\\record.py'])
+        subprocess.run(['python', 'D:\\rural\\record.py'])
+
+
+        # x=handle_recorded_file("C:\\hack\\rural\\sounds\\output.wav")
+
+        x=handle_recorded_file("D:\\rural\\sounds\\output.wav")
         request.session['doctortype'] = x[0][0:3]
        
         return render(request, 'recording.html', {'result': x[0],'hindi':x[1],'english':x[2]})
@@ -252,16 +266,25 @@ def recorded_audio(request):
 
 
 
-def send_report_via_sms(phoneno,precaution, patient_name, diagnosis,medication):
+def send_report_via_sms(phoeno,precaution, patient_name, diagnosis,medication):
     # Twilio credentials
     try:
         
         # Initialize Twilio client
+        account_sid = 'ACabcd4d634beaaaf7f62c0df4a49b0aa0'
+        auth_token = 'e760e62c9fb3d13e3dcb4b098f76d1af'
+
+
         client = Client(account_sid, auth_token)
 
         # Compose the message body
         message_body = f"Patient Name: {patient_name}\nDiagnosis: {diagnosis}\nMedication: {medication}\nPrecaution:{precaution}"
 
+        message = client.messages.create(
+        from_='+17623095573',
+        body=message_body,
+        to='+919960437402'
+        )
 
         # Send the report via SMS
         
@@ -273,7 +296,7 @@ def send_report_via_sms(phoneno,precaution, patient_name, diagnosis,medication):
 
 
 def videocall(request):
-    return render(request, 'videocall.html', {'name': "rahul" + " " + "jagtap"})
+    return render(request, 'videocall.html', {'name': "Shrinivas" + " " + "Hatyalikar"})
 
 def join_room(request):
     roomID=random.randrange(0,1000)
