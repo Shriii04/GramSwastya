@@ -3,7 +3,6 @@ import speech_recognition as sr
 from googletrans import Translator
 import google.generativeai as genai
 
-genai.configure(api_key="AIzaSyDdEVqEWK0INky4NT3dnLuFz88c-OQi6wU")
 model = genai.GenerativeModel('gemini-1.0-pro-latest')
 
 
