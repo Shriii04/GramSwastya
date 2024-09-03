@@ -30,6 +30,7 @@ import speech_recognition as sr
 from googletrans import Translator
 import random
 
+    
 def index(request):
     return render(request, 'index.html')
 
@@ -109,7 +110,7 @@ def chat_with_ai(request):
 def get_ai_response(user_input):
    
 
-    model =model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-pro')
     # model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
      
