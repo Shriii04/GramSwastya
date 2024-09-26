@@ -30,7 +30,8 @@ import speech_recognition as sr
 from googletrans import Translator
 import random
 
-    
+genai.configure(api_key="AIzaSyDdEVqEWK0INky4NT3dnLuFz88c-OQi6wU")
+
 def index(request):
     return render(request, 'index.html')
 
@@ -270,8 +271,8 @@ def send_report_via_sms(phoeno,precaution, patient_name, diagnosis,medication):
     # Twilio credentials
     try:
         
-        
-
+        account_sid = 'ACabcd4d634beaaaf7f62c0df4a49b0aa0'
+        auth_token = '0d47573b8332b16fa46a046437872ce6'
 
         client = Client(account_sid, auth_token)
 

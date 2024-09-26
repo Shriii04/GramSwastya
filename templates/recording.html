@@ -82,7 +82,7 @@
 
     </div>
   </header><!-- End Header -->
-  <div style="margin: 150px;">
+  <!-- <div style="margin: 150px;">
     <div>{{hindi}}</div>
     <div>{{english}}</div></div>
     <form method="POST"  action="{% url 'enter' %}" style="margin-bottom: 300px; margin-top: 200px;">
@@ -92,7 +92,29 @@
     <div style="display: block;"><a href="{% url 'doctor_list' %}" class="record-button" style="margin-left: 750px;margin-bottom: 30px; padding: 25px; border-radius: 20px;">Next Page</a></div>
     
     <div style="display: block;"><h1 style="margin: auto;margin-top: 50px; text-align: center;">You Should Consult An: {{result}}</h1></div>
-    
+     -->
+     
+  <img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fbdjteam.2016.99/MediaObjects/41407_2016_Article_BFbdjteam201699_Figa_HTML.jpg" style="margin-left: 500px;width: 1000px;position: fixed;opacity: 0.2;z-index: -2; left: -200px;" alt="">
+  <form method="POST" action="{% url 'enter' %}" style="margin: 100px 0; padding-top: 250px;">
+      {% csrf_token %}
+      <button type="submit" class="record-button" style="background-color: #007bff; color: white; margin-top: 50px; padding: 20px 40px; margin-left: 660px; border-radius: 10px; font-size: 18px; border: none; cursor: pointer;">
+          Ask your query
+      </button>
+  </form>
+  
+  <div style="margin-top: 50px;">
+      <a href="{% url 'doctor_list' %}" class="record-button" style="background-color: #007bff; color: white; padding: 20px 40px;margin-left: 680px; border-radius: 10px; text-decoration: none; font-size: 18px; border: none; cursor: pointer;">
+          Next Page
+      </a>
+  </div>
+  
+  <div style="margin-top: 50px;">
+      <h1 style="font-size: 28px; font-weight: bold; text-align: center;">You Should Consult An: {{result}}</h1>
+  </div>
+  <div style="margin: 100px 0; text-align: center;">
+    <div style="font-size: 24px; font-weight: bold;">{{hindi}}</div>
+    <div style="font-size: 20px; margin-top: 20px;">{{english}}</div>
+</div>
 
 
 
